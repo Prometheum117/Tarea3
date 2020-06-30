@@ -1,0 +1,40 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+import pylab as pl
+import scipy.stats as stats
+import seaborn as sns
+from scipy.optimize import curve_fit
+from scipy.stats import norm
+from astropy import modeling
+
+k = pd.read_csv("xy.csv") # primero la importamos de datos.csv
+n = pd.read_csv("xyp.csv")
+
+xy = np.array(k)# aqui la definimos como xy mediante np
+xyp = np.array(n)
+
+XY = pd.DataFrame(xy)
+#a aprtir de la amtriz genereada anteriromente como XY, hacer la suma de filas y columnas segun corresponda
+X = XY.sum(axis=1 ) # el nuevo vector con los valores marginales de x
+Y = XY.sum(axis= 0) #el nuevo vector con los valores marginales de y
+
+#print(X)
+#print(Y)
+
+#Definir una nueva matriz
+xpanda = pd.DataFrame(X)
+ypanda = pd.DataFrame(Y[0:11])
+
+#El vector de Densidad conjunta 
+Mxy = xpanda * ypanda
+
+F = np.array(Mxy)
+
+print(F)
+
+#Para graficar
+xs = np.linspace(0, 10, 11)
+plt.plot(xs, Mxy)
+plt.savefig('Densidad Conjunta')
