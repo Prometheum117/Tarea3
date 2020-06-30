@@ -1,0 +1,89 @@
+### Parte 3 ###
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+import pylab as pl
+import scipy.stats as stats
+import seaborn as sns
+from scipy.optimize import curve_fit
+from scipy.stats import norm
+from astropy import modeling
+
+k = pd.read_csv("xy.csv") # primero la importamos de datos.csv
+n = pd.read_csv("xyp.csv")
+
+xy = np.array(k)# aqui la definimos como xy mediante np
+xyp = np.array(n)
+
+XY = pd.DataFrame(xy)
+
+#a aprtir de la amtriz genereada anteriromente como XY, hacer la suma de filas y columnas segun corresponda
+X = XY.sum(axis=1 ) # el nuevo vector con los valores marginales de x
+Y = XY.sum(axis= 0) #el nuevo vector con los valores marginales de y
+#print(XY)
+
+
+#Coorelacion
+aY = np.array(Y)
+aX = np.array(X)
+aXY = np.array(XY)
+
+#print(aX)
+#print(aY)
+
+yf0 = ((aY[0])*(aXY[0, 0])) + ((aY[1])*(aXY[0, 1])) + ((aY[2])*(aXY[0, 2])) + ((aY[3])*(aXY[0, 3])) + ((aY[4])*(aXY[0, 4])) + ((aY[5])*(aXY[0, 5])) + ((aY[6])*(aXY[0, 6])) + ((aY[7])*(aXY[0, 7])) + ((aY[8])*(aXY[0, 8])) + ((aY[9])*(aXY[0, 9])) + ((aY[10])*(aXY[0, 10])) + ((aY[11])*(aXY[0, 11])) + ((aY[12])*(aXY[0, 12])) + ((aY[13])*(aXY[0, 13])) + ((aY[14])*(aXY[0, 14])) + ((aY[15])*(aXY[0, 15])) + ((aY[16])*(aXY[0, 16])) + ((aY[17])*(aXY[0, 17])) + ((aY[18])*(aXY[0, 18])) + ((aY[19])*(aXY[0, 19])) + ((aY[20])*(aXY[0, 20]))
+
+yf1 =  ((aY[0])*(aXY[1, 0])) + ((aY[1])*(aXY[1, 1])) + ((aY[2])*(aXY[1, 2])) + ((aY[3])*(aXY[1, 3])) + ((aY[4])*(aXY[1, 4])) + ((aY[5])*(aXY[1, 5])) + ((aY[6])*(aXY[1, 6])) + ((aY[7])*(aXY[1, 7])) + ((aY[8])*(aXY[1, 8])) + ((aY[9])*(aXY[1, 9])) + ((aY[10])*(aXY[1, 10])) + ((aY[11])*(aXY[1, 11])) + ((aY[12])*(aXY[1, 12])) + ((aY[13])*(aXY[1, 13])) + ((aY[14])*(aXY[1, 14])) + ((aY[15])*(aXY[1, 15])) + ((aY[16])*(aXY[1, 16])) + ((aY[17])*(aXY[1, 17])) + ((aY[18])*(aXY[1, 18])) + ((aY[19])*(aXY[1, 19])) + ((aY[20])*(aXY[1, 20]))
+
+yf2 =  ((aY[0])*(aXY[2, 0])) + ((aY[1])*(aXY[2, 1])) + ((aY[2])*(aXY[2, 2])) + ((aY[3])*(aXY[2, 3])) + ((aY[4])*(aXY[2, 4])) + ((aY[5])*(aXY[2, 5])) + ((aY[6])*(aXY[2, 6])) + ((aY[7])*(aXY[2, 7])) + ((aY[8])*(aXY[2, 8])) + ((aY[9])*(aXY[2, 9])) + ((aY[10])*(aXY[2, 10])) + ((aY[11])*(aXY[2, 11])) + ((aY[12])*(aXY[2, 12])) + ((aY[13])*(aXY[2, 13])) + ((aY[14])*(aXY[2, 14])) + ((aY[15])*(aXY[2, 15])) + ((aY[16])*(aXY[2, 16])) + ((aY[17])*(aXY[2, 17])) + ((aY[18])*(aXY[2, 18])) + ((aY[19])*(aXY[2, 19])) + ((aY[20])*(aXY[2, 20]))
+
+yf3 =  ((aY[0])*(aXY[3, 0])) + ((aY[1])*(aXY[3, 1])) + ((aY[2])*(aXY[3, 2])) + ((aY[3])*(aXY[3, 3])) + ((aY[4])*(aXY[3, 4])) + ((aY[5])*(aXY[3, 5])) + ((aY[6])*(aXY[3, 6])) + ((aY[7])*(aXY[3, 7])) + ((aY[8])*(aXY[3, 8])) + ((aY[9])*(aXY[3, 9])) + ((aY[10])*(aXY[3, 10])) + ((aY[11])*(aXY[3, 11])) + ((aY[12])*(aXY[3, 12])) + ((aY[13])*(aXY[3, 13])) + ((aY[14])*(aXY[3, 14])) + ((aY[15])*(aXY[3, 15])) + ((aY[16])*(aXY[3, 16])) + ((aY[17])*(aXY[3, 17])) + ((aY[18])*(aXY[3, 18])) + ((aY[19])*(aXY[3, 19])) + ((aY[20])*(aXY[3, 20]))
+
+yf4 =  ((aY[0])*(aXY[4, 0])) + ((aY[1])*(aXY[4, 1])) + ((aY[2])*(aXY[4, 2])) + ((aY[3])*(aXY[4, 3])) + ((aY[4])*(aXY[4, 4])) + ((aY[5])*(aXY[4, 5])) + ((aY[6])*(aXY[4, 6])) + ((aY[7])*(aXY[4, 7])) + ((aY[8])*(aXY[4, 8])) + ((aY[9])*(aXY[4, 9])) + ((aY[10])*(aXY[4, 10])) + ((aY[11])*(aXY[4, 11])) + ((aY[12])*(aXY[4, 12])) + ((aY[13])*(aXY[4, 13])) + ((aY[14])*(aXY[4, 14])) + ((aY[15])*(aXY[4, 15])) + ((aY[16])*(aXY[4, 16])) + ((aY[17])*(aXY[4, 17])) + ((aY[18])*(aXY[4, 18])) + ((aY[19])*(aXY[4, 19])) + ((aY[20])*(aXY[4, 20]))
+
+yf5 =  ((aY[0])*(aXY[5, 0])) + ((aY[1])*(aXY[5, 1])) + ((aY[2])*(aXY[5, 2])) + ((aY[3])*(aXY[5, 3])) + ((aY[4])*(aXY[5, 4])) + ((aY[5])*(aXY[5, 5])) + ((aY[6])*(aXY[5, 6])) + ((aY[7])*(aXY[5, 7])) + ((aY[8])*(aXY[5, 8])) + ((aY[9])*(aXY[5, 9])) + ((aY[10])*(aXY[5, 10])) + ((aY[11])*(aXY[5, 11])) + ((aY[12])*(aXY[5, 12])) + ((aY[13])*(aXY[5, 13])) + ((aY[14])*(aXY[5, 14])) + ((aY[15])*(aXY[5, 15])) + ((aY[16])*(aXY[5, 16])) + ((aY[17])*(aXY[5, 17])) + ((aY[18])*(aXY[5, 18])) + ((aY[19])*(aXY[5, 19])) + ((aY[20])*(aXY[5, 20]))
+
+yf6 =  ((aY[0])*(aXY[6, 0])) + ((aY[1])*(aXY[6, 1])) + ((aY[2])*(aXY[6, 2])) + ((aY[3])*(aXY[6, 3])) + ((aY[4])*(aXY[6, 4])) + ((aY[5])*(aXY[6, 5])) + ((aY[6])*(aXY[6, 6])) + ((aY[7])*(aXY[6, 7])) + ((aY[8])*(aXY[6, 8])) + ((aY[9])*(aXY[6, 9])) + ((aY[10])*(aXY[6, 10])) + ((aY[11])*(aXY[6, 11])) + ((aY[12])*(aXY[6, 12])) + ((aY[13])*(aXY[6, 13])) + ((aY[14])*(aXY[6, 14])) + ((aY[15])*(aXY[6, 15])) + ((aY[16])*(aXY[6, 16])) + ((aY[17])*(aXY[6, 17])) + ((aY[18])*(aXY[6, 18])) + ((aY[19])*(aXY[6, 19])) + ((aY[20])*(aXY[6, 20]))
+
+yf7 =  ((aY[0])*(aXY[7, 0])) + ((aY[1])*(aXY[7, 1])) + ((aY[2])*(aXY[7, 2])) + ((aY[3])*(aXY[7, 3])) + ((aY[4])*(aXY[7, 4])) + ((aY[5])*(aXY[7, 5])) + ((aY[6])*(aXY[7, 6])) + ((aY[7])*(aXY[7, 7])) + ((aY[8])*(aXY[7, 8])) + ((aY[9])*(aXY[7, 9])) + ((aY[10])*(aXY[7, 10])) + ((aY[11])*(aXY[7, 11])) + ((aY[12])*(aXY[7, 12])) + ((aY[13])*(aXY[7, 13])) + ((aY[14])*(aXY[7, 14])) + ((aY[15])*(aXY[7, 15])) + ((aY[16])*(aXY[7, 16])) + ((aY[17])*(aXY[7, 17])) + ((aY[18])*(aXY[7, 18])) + ((aY[19])*(aXY[7, 19])) + ((aY[20])*(aXY[7, 20]))
+
+yf8 =  ((aY[0])*(aXY[8, 0])) + ((aY[1])*(aXY[8, 1])) + ((aY[2])*(aXY[8, 2])) + ((aY[3])*(aXY[8, 3])) + ((aY[4])*(aXY[8, 4])) + ((aY[5])*(aXY[8, 5])) + ((aY[6])*(aXY[8, 6])) + ((aY[7])*(aXY[8, 7])) + ((aY[8])*(aXY[8, 8])) + ((aY[9])*(aXY[8, 9])) + ((aY[10])*(aXY[8, 10])) + ((aY[11])*(aXY[8, 11])) + ((aY[12])*(aXY[8, 12])) + ((aY[13])*(aXY[8, 13])) + ((aY[14])*(aXY[8, 14])) + ((aY[15])*(aXY[8, 15])) + ((aY[16])*(aXY[8, 16])) + ((aY[17])*(aXY[8, 17])) + ((aY[18])*(aXY[8, 18])) + ((aY[19])*(aXY[8, 19])) + ((aY[20])*(aXY[8, 20]))
+
+yf9 =  ((aY[0])*(aXY[9, 0])) + ((aY[1])*(aXY[9, 1])) + ((aY[2])*(aXY[9, 2])) + ((aY[3])*(aXY[9, 3])) + ((aY[4])*(aXY[9, 4])) + ((aY[5])*(aXY[9, 5])) + ((aY[6])*(aXY[9, 6])) + ((aY[7])*(aXY[9, 7])) + ((aY[8])*(aXY[9, 8])) + ((aY[9])*(aXY[9, 9])) + ((aY[10])*(aXY[9, 10])) + ((aY[11])*(aXY[9, 11])) + ((aY[12])*(aXY[9, 12])) + ((aY[13])*(aXY[9, 13])) + ((aY[14])*(aXY[9, 14])) + ((aY[15])*(aXY[9, 15])) + ((aY[16])*(aXY[9, 16])) + ((aY[17])*(aXY[9, 17])) + ((aY[18])*(aXY[9, 18])) + ((aY[19])*(aXY[9, 19])) + ((aY[20])*(aXY[9, 20]))
+
+yf10 =  ((aY[0])*(aXY[10, 0])) + ((aY[1])*(aXY[10, 1])) + ((aY[2])*(aXY[10, 2])) + ((aY[3])*(aXY[10, 3])) + ((aY[4])*(aXY[10, 4])) + ((aY[5])*(aXY[10, 5])) + ((aY[6])*(aXY[10, 6])) + ((aY[7])*(aXY[10, 7])) + ((aY[8])*(aXY[10, 8])) + ((aY[9])*(aXY[10, 9])) + ((aY[10])*(aXY[10, 10])) + ((aY[11])*(aXY[10, 11])) + ((aY[12])*(aXY[10, 12])) + ((aY[13])*(aXY[10, 13])) + ((aY[14])*(aXY[10, 14])) + ((aY[15])*(aXY[10, 15])) + ((aY[16])*(aXY[10, 16])) + ((aY[17])*(aXY[10, 17])) + ((aY[18])*(aXY[10, 18])) + ((aY[19])*(aXY[10, 19])) + ((aY[20])*(aXY[10, 20]))
+
+#Resultado de Coorelacion
+
+Rxy = (aX[0]* yf0 ) + (aX[1]* yf1 ) + (aX[2]* yf2 ) + (aX[3]* yf3 ) + (aX[4]* yf4 ) + (aX[5]* yf5 ) + (aX[6]* yf6 ) + (aX[7]* yf7 ) + (aX[8]* yf8 ) + (aX[9]* yf9 ) + (aX[10]* yf10 ) 
+
+
+print(Rxy)
+
+#Calculo de Covarianza
+
+#Calculo de las medias
+
+
+Ex = X.mean()
+Ey = Y.mean()
+
+Cxy = Rxy - (Ex*Ey)
+
+print(Cxy)
+
+
+#Calcular Pearson
+
+#Calcular desviacion estandar, mediante el calculo de la varinza
+
+vX = X.var()
+vY = Y.var()
+
+deX = (vX)**(1/2)
+deY = (vY)**(1/2)
+
+P = (Cxy)/(deX*deY)
+
+print(P)
