@@ -1,0 +1,46 @@
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+import pylab as pl
+import scipy.stats as stats
+import seaborn as sns
+from scipy.optimize import curve_fit
+from scipy.interpolate import interp1d
+
+
+
+#Definición de la matriz
+m = pd.read_csv("xy.csv") # primero la importamos de datos.csv
+n = pd.read_csv("xyp.csv")
+
+listax = ['x5', 'x6', 'x7', 'x8', 'x9', 'x10', 'x11', 'x12', 'x13', 'x14', 'x15']
+
+listay = ['y5', 'y6', 'y7', 'y8', 'y9', 'y10', 'y11', 'y12', 'y13', 'y14', 'y15', 'y16', 'y17', 'y18', 'y19', 'y20', 'y21', 'y22', 'y23', 'y24', 'y25' ]
+
+xn = np.array(listax)
+yn = np.array(listay)
+
+
+xy = np.array(m)# aqui la definimos como N mediante np
+xyp = np.array(n)
+
+XY = pd.DataFrame(xy)
+#a aprtir de la amtriz genereada anteriromente como XY, hacer la suma de filas y columnas segun corresponda
+X = XY.sum(axis=1) # el nuevo vector con los valores marginales de x
+Y = XY.sum(axis=0) #el nuevo vector con los valores marginales de y
+
+
+Yp = pd.DataFrame(Y[0:21])
+print(Y)
+print(Yp)
+xs = np.linspace(5, 15, 11)
+
+#seleccionamos si imprimir una o la otra quitando o poniendo los "#"
+
+#plt.plot(xn, X, 'ok', label="DatosX")
+#plt.savefig('MarginalX')
+#plt.ioff() 
+
+
+plt.plot(yn, Yp, 'ok', label="DatosY")
+plt.savefig('MarginalY')
